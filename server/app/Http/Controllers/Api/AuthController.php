@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -65,11 +66,20 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        $user = $request->user();
+
+        if ($user) {
+
+            $user->tokens()->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'User logged out successfully!'
+            ]);
+        }
 
         return response()->json([
-            'success' => true,
-            'message' => 'User logged out successfully!'
+            'success' => false,
+            'message' => 'User not authenticated'
         ]);
     }
 }
