@@ -1,32 +1,26 @@
 import useApiMutate from "../useApiMutate";
 import Cookies from "js-cookie";
 
-type Params = {
-  email: string;
-  password: string;
-};
-
-export function useLogin({
+export function useLogout({
   onSuccess,
   onError,
 }: {
   onSuccess?: (response: AuthResponse) => void;
   onError?: (error: string | null) => void;
 } = {}) {
-  const { mutate, loading, error } = useApiMutate<Params, AuthResponse>(
-    "/api/login",
+  const { mutate, loading, error } = useApiMutate<null, AuthResponse>(
+    "/api/logout",
     {
       method: "POST",
     }
   );
 
-  const login = async (params: Params) => {
+  const login = async () => {
     try {
-      const response = await mutate(params);
+      const response = await mutate();
 
       if (response?.success) {
-        const token = response?.data?.token ?? "";
-        Cookies.set("auth_token", token, { expires: 1 });
+        Cookies.remove("auth_token");
         onSuccess && onSuccess(response as AuthResponse);
       }
     } catch (err) {

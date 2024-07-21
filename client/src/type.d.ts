@@ -4,6 +4,14 @@ interface GeneralResponse<T> {
   data: T;
 }
 
+interface AuthResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    token: string;
+  };
+}
+
 interface Todo {
   id: number;
   title: string;

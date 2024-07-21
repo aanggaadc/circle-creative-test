@@ -3,6 +3,7 @@ export * from "./todo/useCreateTodo";
 export * from "./todo/useDeleteTodo";
 export * from "./todo/useUpdateTodo";
 export * from "./auth/useLogin";
+export * from "./auth/useLogout";
 export * from "./auth/useRegister";
 export * from "./auth/useAuth";
 export * from "./useCsrfToken";
