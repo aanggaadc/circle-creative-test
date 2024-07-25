@@ -17,7 +17,7 @@ type UseQueryHookReturn<T> = {
 export default function useApiQuery<TData, TBody = unknown>(
   url: string,
   body?: TBody,
-  options?: IOptions
+  options: IOptions = { enabled: true }
 ): UseQueryHookReturn<TData> {
   const navigate = useNavigate();
   const [data, setData] = useState<TData | undefined>(undefined);
@@ -46,7 +46,7 @@ export default function useApiQuery<TData, TBody = unknown>(
   );
 
   useEffect(() => {
-    if (!options?.enabled) return;
+    if (!options.enabled) return;
 
     const controller = new AbortController();
     fetchData(controller);
@@ -54,7 +54,7 @@ export default function useApiQuery<TData, TBody = unknown>(
     return () => {
       controller.abort();
     };
-  }, [options?.enabled, fetchData]);
+  }, [options.enabled, fetchData]);
 
   return {
     data,
