@@ -8,7 +8,7 @@ import { Spinner } from "./components/shared";
 function App() {
   const { isLoggedIn } = useAuth();
   useCsrfToken();
-  useGetUsers(isLoggedIn);
+  useGetUsers({ enabled: isLoggedIn });
 
   return (
     <>
