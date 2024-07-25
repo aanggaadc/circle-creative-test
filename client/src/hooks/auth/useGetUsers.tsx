@@ -3,10 +3,10 @@ import { useDispatch } from "react-redux";
 import { loadUser } from "../../redux/userSlice";
 import useApiQuery from "../useApiQuery";
 
-export const useGetUsers = (fetchWhen: boolean) => {
+export const useGetUsers = ({ enabled }: { enabled: boolean }) => {
   const { data, loading, error, refetch } = useApiQuery<
     GeneralResponse<User[]>
-  >(`/api/users`, undefined, undefined, fetchWhen);
+  >(`/api/users`, undefined, { enabled });
   const dispatch = useDispatch();
 
   useEffect(() => {
