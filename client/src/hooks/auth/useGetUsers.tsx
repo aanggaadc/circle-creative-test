@@ -13,7 +13,7 @@ export const useGetUsers = ({ enabled }: { enabled: boolean }) => {
     if (data) {
       dispatch(loadUser(data.data));
     }
-  }, [data, dispatch]);
+  }, [data]);
 
   return { loading, error, refetch };
 };

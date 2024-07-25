@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import fetcher from "../lib/fetcher";
 import getErrorMessage from "../lib/error";
@@ -24,26 +24,23 @@ export default function useApiQuery<TData, TBody = unknown>(
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchData = useCallback(
-    async (controller: AbortController) => {
-      setLoading(true);
-      setError(null);
-      try {
-        const response = await fetcher<TData, TBody>(url, body, {
-          ...options,
-          signal: controller.signal,
-        });
-        setData(response);
-      } catch (error) {
-        const errorMessage = getErrorMessage(error);
-        setError(errorMessage);
-        if (errorMessage === "Unauthorized") navigate("/login");
-      } finally {
-        setLoading(false);
-      }
-    },
-    [url, body, options]
-  );
+  const fetchData = async (controller: AbortController) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetcher<TData, TBody>(url, body, {
+        ...options,
+        signal: controller.signal,
+      });
+      setData(response);
+    } catch (error) {
+      const errorMessage = getErrorMessage(error);
+      setError(errorMessage);
+      if (errorMessage === "Unauthorized") navigate("/login");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!options.enabled) return;
@@ -54,7 +51,7 @@ export default function useApiQuery<TData, TBody = unknown>(
     return () => {
       controller.abort();
     };
-  }, [options.enabled, fetchData]);
+  }, [options.enabled]);
 
   return {
     data,
